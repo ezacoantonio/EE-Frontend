@@ -17,6 +17,8 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import config from "../config"; // Ensure your config file has the correct endpoint
 import CustomSnackbar from "../components/CustomSnackbar";
+import { ThemeProvider } from "@mui/material/styles";
+import customTheme from "../styles/textFieldStyles";
 
 export default function LoginCard() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -93,22 +95,25 @@ export default function LoginCard() {
             onSubmit={handleSubmit}
             style={{ display: "flex", flexDirection: "column", gap: "20px" }}
           >
-            <TextField
-              label="Email"
-              type="email"
-              variant="outlined"
-              fullWidth
-              name="email"
-              onChange={handleChange}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              name="password"
-              onChange={handleChange}
-            />
+            <ThemeProvider theme={customTheme}>
+              <TextField
+                label="Email"
+                type="email"
+                variant="outlined"
+                fullWidth
+                name="email"
+                onChange={handleChange}
+              />
+
+              <TextField
+                label="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                name="password"
+                onChange={handleChange}
+              />
+            </ThemeProvider>
             <Button
               variant="contained"
               type="submit"

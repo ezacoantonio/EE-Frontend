@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import config from "../config"; // Ensure your config file has the correct endpoint
 import CustomSnackbar from "../components/CustomSnackbar";
+import { ThemeProvider } from "@mui/material/styles";
+import customTheme from "../styles/textFieldStyles";
 
 export default function RegistrationCard() {
   const [formData, setFormData] = useState({
@@ -103,51 +105,53 @@ export default function RegistrationCard() {
             onSubmit={handleSubmit}
             style={{ display: "flex", flexDirection: "column", gap: "20px" }}
           >
-            <TextField
-              label="First Name"
-              variant="outlined"
-              fullWidth
-              name="firstName"
-              onChange={handleChange}
-            />
-            <TextField
-              label="Last Name"
-              variant="outlined"
-              fullWidth
-              name="lastName"
-              onChange={handleChange}
-            />
-            <TextField
-              label="Username"
-              variant="outlined"
-              fullWidth
-              name="username"
-              onChange={handleChange}
-            />
-            <TextField
-              label="Email"
-              type="email"
-              variant="outlined"
-              fullWidth
-              name="email"
-              onChange={handleChange}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              name="password"
-              onChange={handleChange}
-            />
-            <TextField
-              label="Confirm Password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              name="confirmPassword"
-              onChange={handleChange}
-            />
+            <ThemeProvider theme={customTheme}>
+              <TextField
+                label="First Name"
+                variant="outlined"
+                fullWidth
+                name="firstName"
+                onChange={handleChange}
+              />
+              <TextField
+                label="Last Name"
+                variant="outlined"
+                fullWidth
+                name="lastName"
+                onChange={handleChange}
+              />
+              <TextField
+                label="Username"
+                variant="outlined"
+                fullWidth
+                name="username"
+                onChange={handleChange}
+              />
+              <TextField
+                label="Email"
+                type="email"
+                variant="outlined"
+                fullWidth
+                name="email"
+                onChange={handleChange}
+              />
+              <TextField
+                label="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                name="password"
+                onChange={handleChange}
+              />
+              <TextField
+                label="Confirm Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                name="confirmPassword"
+                onChange={handleChange}
+              />
+            </ThemeProvider>
             <Button
               variant="contained"
               type="submit"

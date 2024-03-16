@@ -1,6 +1,7 @@
 // config.js
 
-const API_URL = "http://localhost:4500/api"; // Ensure this matches your backend's host and port
+//const API_URL = "http://localhost:4500/api"; // Ensure this matches your backend's host and port
+const API_URL = "https://eae-backend.onrender.com";
 
 const config = {
   endpoints: {

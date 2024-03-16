@@ -1,47 +1,29 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ClientDashboard from "./pages/ClientsPage";
+import CompanyDashboard from "./pages/CompanyDashboard";
 import HomePage from "./pages/HomePage";
-import DashboardPage from "./pages/DashboardPage";
-//import ProjectsPage from "./pages/ProjectsPage";
-//import ClientsPage from "./pages/ClientsPage";
-import SettingsPage from "./pages/SettingsPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ResponsiveAppBar from "./components/ResponsiveAppBar";
-import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
-import "./App.css";
+import SettingsPage from "./pages/SettingsPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AlertProvider } from "./components/AlertContext";
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AlertProvider>
         <ResponsiveAppBar />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <SettingsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
-          {/* More protected routes as needed */}
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/client-dashboard" element={<ClientDashboard />} />
+          <Route path="/company-dashboard" element={<CompanyDashboard />} />
+          {/* Define other routes here */}
         </Routes>
-      </Router>
-    </AuthProvider>
+      </AlertProvider>
+    </Router>
   );
 };
 

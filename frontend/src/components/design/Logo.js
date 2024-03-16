@@ -5,7 +5,7 @@ import logo2 from "../../assets/2.png";
 import logo3 from "../../assets/3.png";
 import logo4 from "../../assets/4.png";
 
-const Logo = ({ logoNumber }) => {
+const Logo = ({ logoNumber, isLinked = true }) => {
   let logoUrl;
   switch (logoNumber) {
     case 1:
@@ -24,15 +24,15 @@ const Logo = ({ logoNumber }) => {
       logoUrl = logo1; // Default logo if no number or invalid number is provided
   }
 
-  return (
-    <Link to="/">
-      <img
-        src={logoUrl}
-        alt={`Logo ${logoNumber}`}
-        style={{ height: "100%", maxHeight: "64px" }}
-      />
-    </Link>
+  const logoImage = (
+    <img
+      src={logoUrl}
+      alt={`Logo ${logoNumber}`}
+      style={{ height: "100%", maxHeight: "64px" }}
+    />
   );
+
+  return isLinked ? <Link to="/">{logoImage}</Link> : logoImage;
 };
 
 export default Logo;

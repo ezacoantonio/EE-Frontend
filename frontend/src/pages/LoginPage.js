@@ -1,3 +1,5 @@
+// LoginPage.js
+
 import React, { useState } from "react";
 import {
   Card,
@@ -7,27 +9,23 @@ import {
   Button,
   Box,
   IconButton,
-  useTheme,
   useMediaQuery,
 } from "@mui/material";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import axios from "axios";
-import config from "../config"; // Ensure your config file has the correct endpoint
+import config from "../config";
 import CustomSnackbar from "../components/CustomSnackbar";
 import { ThemeProvider } from "@mui/material/styles";
 import customTheme from "../styles/textFieldStyles";
+import { useTheme } from "@mui/material/styles";
 
-export default function LoginCard() {
+export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const { login } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  // State for managing Snackbar
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("info");
@@ -40,14 +38,14 @@ export default function LoginCard() {
     event.preventDefault();
     try {
       const response = await axios.post(config.endpoints.login, formData);
-      // Assuming the login function updates the context/state with user info
-      login(response.data); // Simulate login, adjust according to your auth context
-      setSnackbarMessage("Login successful!");
-      setSnackbarSeverity("success");
-      setOpenSnackbar(true);
-      navigate("/dashboard"); // Redirect the user after login
+      // Assuming the response includes user role
+      localStorage.setItem("user", JSON.stringify(response.data.user)); // Adjust according to actual response
+      navigate(
+        response.data.user.role === "client"
+          ? "/client-dashboard"
+          : "/company-dashboard"
+      );
     } catch (error) {
-      console.error("Login error", error);
       setSnackbarMessage("Login failed. Please try again.");
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
@@ -104,7 +102,6 @@ export default function LoginCard() {
                 name="email"
                 onChange={handleChange}
               />
-
               <TextField
                 label="Password"
                 type="password"
@@ -137,10 +134,7 @@ export default function LoginCard() {
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{
-                    alignSelf: "center",
-                    color: "black",
-                  }}
+                  sx={{ alignSelf: "center", color: "black" }}
                 >
                   Don't have an account? Register here
                 </Typography>

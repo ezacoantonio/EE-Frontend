@@ -10,33 +10,28 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import PersonAddIcon from "@mui/icons-material/PersonAdd"; // Icon for registration
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import config from "../config"; // Ensure your config file has the correct endpoint
+import config from "../config";
 import CustomSnackbar from "../components/CustomSnackbar";
 import { ThemeProvider } from "@mui/material/styles";
 import customTheme from "../styles/textFieldStyles";
 
 export default function RegistrationCard() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    username: "",
+    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    userType: "customer", // Set userType to "customer" by default
+    role: "client", // Added for clarity; remove if not needed
   });
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  // State for managing Snackbar
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("info"); // 'success' or 'error'
+  const [snackbarSeverity, setSnackbarSeverity] = useState("info");
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -44,18 +39,17 @@ export default function RegistrationCard() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setSnackbarMessage("Passwords do not match.");
-      setSnackbarSeverity("error");
-      setOpenSnackbar(true);
-      return;
-    }
     try {
-      await axios.post(config.endpoints.register, formData);
+      await axios.post(config.endpoints.register, {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role, // Ensure this matches your backend's expected structure
+      });
       setSnackbarMessage("Registration successful! Please log in.");
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
-      navigate("/login"); // Redirect to login page after successful registration
+      navigate("/login");
     } catch (error) {
       console.error("Registration error", error);
       setSnackbarMessage("Registration failed. Please try again.");
@@ -107,24 +101,10 @@ export default function RegistrationCard() {
           >
             <ThemeProvider theme={customTheme}>
               <TextField
-                label="First Name"
+                label="Full Name"
                 variant="outlined"
                 fullWidth
-                name="firstName"
-                onChange={handleChange}
-              />
-              <TextField
-                label="Last Name"
-                variant="outlined"
-                fullWidth
-                name="lastName"
-                onChange={handleChange}
-              />
-              <TextField
-                label="Username"
-                variant="outlined"
-                fullWidth
-                name="username"
+                name="name"
                 onChange={handleChange}
               />
               <TextField
@@ -143,21 +123,13 @@ export default function RegistrationCard() {
                 name="password"
                 onChange={handleChange}
               />
-              <TextField
-                label="Confirm Password"
-                type="password"
-                variant="outlined"
-                fullWidth
-                name="confirmPassword"
-                onChange={handleChange}
-              />
             </ThemeProvider>
             <Button
               variant="contained"
               type="submit"
               fullWidth
               startIcon={<PersonAddIcon />}
-              sx={{ backgroundColor: "green", color: "white" }}
+              sx={{ backgroundColor: "black", color: "white" }}
             >
               Register
             </Button>
@@ -175,10 +147,7 @@ export default function RegistrationCard() {
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{
-                    alignSelf: "center",
-                    color: "black",
-                  }}
+                  sx={{ alignSelf: "center", color: "black" }}
                 >
                   Already have an account? Log in here...
                 </Typography>
